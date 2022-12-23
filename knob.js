@@ -2,7 +2,7 @@ const knob = document.querySelector('.knob');
 const knobDial = document.querySelector('.knob-dial');
 const value = document.getElementById('value');
 
-let dialAngle = 180
+let dialAngle = 160
 let lastX = 0;
 let currentX = 0;
 
@@ -39,16 +39,16 @@ function knobEvent(x) {
 }
 
 function rotateRight(x) {
-  if (dialAngle <= 450) {
-    dialAngle += 7
+  if (dialAngle <= 447) {
+    dialAngle += 6
     knobDial.style.transform = `rotate(${dialAngle}deg)`;
     currentX = x;
   }
 }
 
 function rotateLeft(x) {
-  if (dialAngle >= 90) {
-    dialAngle -= 7
+  if (dialAngle >= 91) {
+    dialAngle -= 6
     knobDial.style.transform = `rotate(${dialAngle}deg)`;
     currentX = x;
   }
@@ -70,8 +70,10 @@ function reset() {
 
 function getCurrentValue() {
   let knobValuePercent = Math.floor((dialAngle - 90) * 124 / 450);
-  if (knobValuePercent === -1) {
+  if (knobValuePercent < 0) {
     knobValuePercent = 0;
+  } else if (knobValuePercent >= 98){
+    knobValuePercent = 100;
   }
   return knobValuePercent;
 }
