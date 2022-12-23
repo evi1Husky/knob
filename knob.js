@@ -17,7 +17,9 @@ knob.onmousedown = () => {
   knob.style.cursor = 'grabbing';
   window.onmousemove = (event) => {
     knobEvent(event.x);
-    value.innerHTML = getCurrentValue();
+    setTimeout(() => {
+      value.innerHTML = getCurrentValue();
+    }, 50);
   }
 }
 
