@@ -20,7 +20,7 @@ knob.onmousedown = () => {
     makeTicks(getCurrentValue())
     setTimeout(() => {
       value.innerHTML = getCurrentValue();
-    }, 50);
+    }, 300);
   }
 }
 
