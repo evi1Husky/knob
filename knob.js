@@ -85,8 +85,8 @@ function getCurrentValue() {
   return knobValuePercent;
 }
 
-function makeTicks(numberOfTicksToLight) {
-  const numberOfTicksToLight = numberOfTicksToLight / 4.7
+function makeTicks(numberOfActiveTicks) {
+  const numberOfTicksToLight = numberOfActiveTicks / 4.7
   const div = 360 / 20;
   const radius = 40;
   while(tickContainer.firstChild) {
