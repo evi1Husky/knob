@@ -83,7 +83,7 @@ const tickContainer = document.querySelector('.ticks');
 function makeTicks(val) {
   let highlightNumTicks = val / 4.7
   let div = 360 / 20;
-  let radius = 45;
+  let radius = 40;
   while(tickContainer.firstChild) {
     tickContainer.removeChild(tickContainer.firstChild);
   }
