@@ -6,7 +6,6 @@ let dialAngle = 180
 let lastX = 0;
 let currentX = 0;
 
-
 knobDial.style.transform = `rotate(${dialAngle}deg)`;
 value.textContent = getCurrentValue();
 
