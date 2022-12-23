@@ -7,7 +7,7 @@ html {
   font-family: 'Dejavu Sans', sans-serif;
 }
 
-body {
+main {
   box-sizing: border-box;
   font-size: 1.6rem;
   background: #1b1d21;
@@ -50,25 +50,36 @@ body {
 
 .tick {
   position: absolute;
-  width: 0.8rem;
+  width: 0.7rem;
   height: 0.13rem;
   background-color: rgb(84, 84, 84);
   border-radius: 0.1rem;
   transform: rotate(0deg);
 }
 
-.activetick {
+.lit-tick {
   background-color: #ac5;
 }
 
-p {
-  color: aquamarine;
-  margin-bottom: 3rem;
-}
-
-.ticks {
+.tick-container {
   position: absolute;
   transform: rotate(90deg);
   margin-right: 0.5rem;
   margin-bottom: 0.3rem;
+}
+
+p {
+  position: absolute;
+  top: 30%;
+  color: aquamarine;
+  margin-bottom: 3rem;
+}
+
+.test {
+  position: absolute;
+  top: 10%;
+  border-radius: 50%;
+  width: 17rem;
+  height: 17rem;
+  background-color: rgb(106, 0, 255);
 }

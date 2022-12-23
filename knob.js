@@ -1,10 +1,18 @@
+(() => {
+  'use strict'
+
+const square = document.querySelector('.test');
+const value = document.querySelector('.val')
+
+
 const knob = document.querySelector('.knob');
 const knobDial = document.querySelector('.knob-dial');
-const value = document.getElementById('value');
+const tickContainer = document.querySelector('.tick-container');
 
 let dialAngle = 160
 let lastX = 0;
 let currentX = 0;
+let initialTickAngle = 0
 
 knobDial.style.transform = `rotate(${dialAngle}deg)`;
 value.innerHTML = getCurrentValue();
@@ -18,9 +26,8 @@ knob.onmousedown = () => {
   window.onmousemove = (event) => {
     knobEvent(event.x);
     makeTicks(getCurrentValue())
-    setTimeout(() => {
-      value.innerHTML = getCurrentValue();
-    }, 300);
+    squareResize()
+    value.innerHTML = getCurrentValue();
   }
 }
 
@@ -55,12 +62,12 @@ function rotateLeft(x) {
 }
 
 function reset() {
-  if (dialAngle < 90) {
+  if (dialAngle <= 90) {
     dialAngle = 90
     currentX = 0
     lastX = 0
     knobDial.style.transform = `rotate(${dialAngle}deg)`;
-  } else if (dialAngle > 450) {
+  } else if (dialAngle >= 450) {
     dialAngle = 450
     currentX = 0
     lastX = 0
@@ -78,35 +85,43 @@ function getCurrentValue() {
   return knobValuePercent;
 }
 
-const tickContainer = document.querySelector('.ticks');
-
-function makeTicks(val) {
-  let highlightNumTicks = val / 4.7
-  let div = 360 / 20;
-  let radius = 40;
+function makeTicks(numberOfTicksToLight) {
+  const numberOfTicksToLight = numberOfTicksToLight / 4.7
+  const div = 360 / 20;
+  const radius = 40;
   while(tickContainer.firstChild) {
     tickContainer.removeChild(tickContainer.firstChild);
   }
-  let offsetToParentCenter = parseInt(tickContainer.offsetWidth / 2);
-  let offsetToChildCenter = 3;
-  let totalOffset = offsetToParentCenter - offsetToChildCenter;
+  const offsetToParentCenter = parseInt(tickContainer.offsetWidth / 2);
+  const offsetToChildCenter = 3;
+  const totalOffset = offsetToParentCenter - offsetToChildCenter;
   for (let i = 0; i < 20; ++i) {
-    var childdiv = document.createElement('div');
-    if(i < highlightNumTicks){
-      childdiv.className = "tick activetick";
+    const tick = document.createElement('div');
+    if(i < numberOfTicksToLight){
+      tick.className = "tick lit-tick";
     } else {
-      childdiv.className = "tick";
+      tick.className = "tick";
     }
-    childdiv.style.position = 'absolute';
+    tick.style.position = 'absolute';
     let y = Math.sin((div * i) * (Math.PI / 180)) * radius;
     let x = Math.cos((div * i) * (Math.PI / 180)) * radius;
-    childdiv.style.top = (y + totalOffset).toString() + "px";
-    childdiv.style.left = (x + totalOffset).toString() + "px";
-    tickContainer.appendChild(childdiv);
-    childdiv.style.transform = "rotate(" + startingTickAngle + "deg)";
-    startingTickAngle += 18;
+    tick.style.top = (y + totalOffset).toString() + "px";
+    tick.style.left = (x + totalOffset).toString() + "px";
+    tickContainer.appendChild(tick);
+    tick.style.transform = "rotate(" + initialTickAngle + "deg)";
+    initialTickAngle += 18;
   }
-  startingTickAngle = 0
+  initialTickAngle = 0
 }
-let startingTickAngle = 0
+
 makeTicks(getCurrentValue())
+
+function squareResize() {
+  const val = (getCurrentValue() / 100) * 17;
+  square.style.width = `${val}rem`
+  square.style.height = `${val}rem`
+}
+
+squareResize()
+
+})();
