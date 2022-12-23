@@ -20,6 +20,7 @@ body {
 }
 
 .knob {
+  position: relative;
   cursor: pointer;
   width: 6rem;
   height: 6rem;
@@ -47,7 +48,27 @@ body {
   background: rgb(223, 92, 92);
 }
 
+.tick {
+  position: absolute;
+  width: 1rem;
+  height: 0.2rem;
+  background-color: rgb(84, 84, 84);
+  border-radius: 0.1rem;
+  transform: rotate(0deg);
+}
+
+.activetick {
+  background-color: #ac5;
+}
+
 p {
   color: aquamarine;
   margin-bottom: 3rem;
+}
+
+.ticks {
+  position: absolute;
+  transform: rotate(89deg);
+  margin-right: 0.4rem;
+  margin-bottom: 0.4rem;
 }
