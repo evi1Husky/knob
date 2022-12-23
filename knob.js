@@ -7,7 +7,7 @@ let lastX = 0;
 let currentX = 0;
 
 knobDial.style.transform = `rotate(${dialAngle}deg)`;
-value.textContent = getCurrentValue();
+value.innerHTML = getCurrentValue();
 
 knob.ontouchmove = (event) => {
   knobEvent(~~(event.touches[0].clientX));
@@ -17,7 +17,7 @@ knob.onmousedown = () => {
   knob.style.cursor = 'grabbing';
   window.onmousemove = (event) => {
     knobEvent(event.x);
-    value.textContent = getCurrentValue();
+    value.innerHTML = getCurrentValue();
   }
 }
 
