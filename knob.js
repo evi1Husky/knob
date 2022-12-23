@@ -1,6 +1,6 @@
 const knob = document.querySelector('.knob');
 const knobDial = document.querySelector('.knob-dial');
-const value = document.querySelector('.value');
+const value = document.getElementById('value');
 
 let dialAngle = 180
 let lastX = 0;
