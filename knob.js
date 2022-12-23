@@ -69,7 +69,7 @@ function reset() {
 }
 
 function getCurrentValue() {
-  let knobValuePercent = ~~((dialAngle - 90) * 124 / 450);
+  let knobValuePercent = Math.floor((dialAngle - 90) * 124 / 450);
   if (knobValuePercent === -1) {
     knobValuePercent = 0;
   }
