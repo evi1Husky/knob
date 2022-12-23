@@ -1,32 +1,30 @@
-const knob = document.querySelector('.knob')
-const knobDial = document.querySelector('.knob-dial')
+const knob = document.querySelector('.knob');
+const knobDial = document.querySelector('.knob-dial');
+const value = document.querySelector('.value');
 
 let dialAngle = 180
 let lastX = 0;
 let currentX = 0;
 
 knobDial.style.transform = `rotate(${dialAngle}deg)`;
+value.textContent = getCurrentValue();
 
-knob.addEventListener('touchmove', (event) => {
+knob.ontouchmove = (event) => {
   knobEvent(~~(event.touches[0].clientX));
-})
+}
 
-knob.addEventListener("mousedown", () => {
+knob.onmousedown = () => {
   knob.style.cursor = 'grabbing';
-  knob.onmousemove = (event) => {
-    console.log(event.x);
-      knobEvent(event.x);
+  window.onmousemove = (event) => {
+    knobEvent(event.x);
+    value.textContent = getCurrentValue();
   }
-})
+}
 
-knob.addEventListener("mouseup", () => {
+window.onmouseup = () => {
   knob.style.cursor = 'pointer';
-  knob.onmousemove = null;
-})
-
-knob.addEventListener("mouseleave", () => {
-  knob.onmousemove = null;
-})
+  window.onmousemove = null;
+}
 
 function knobEvent(x) {
   lastX = x
@@ -72,4 +70,5 @@ function getCurrentValue() {
   if (knobValuePercent === -1) {
     knobValuePercent = 0;
   }
+  return knobValuePercent;
 }
