@@ -19,6 +19,9 @@ value.innerHTML = getCurrentValue();
 
 knob.ontouchmove = (event) => {
   knobEvent(~~(event.touches[0].clientX));
+  makeTicks(getCurrentValue())
+  squareResize()
+  value.innerHTML = getCurrentValue();
 }
 
 knob.onmousedown = () => {
@@ -102,7 +105,6 @@ function makeTicks(numberOfActiveTicks) {
     } else {
       tick.className = "tick";
     }
-    tick.style.position = 'absolute';
     let y = Math.sin((div * i) * (Math.PI / 180)) * radius;
     let x = Math.cos((div * i) * (Math.PI / 180)) * radius;
     tick.style.top = (y + totalOffset).toString() + "px";
