@@ -1,5 +1,13 @@
-const knob = document.getElementById('knob')
+const knob = document.getElementById('knob');
+const circle = document.getElementById('circle');
 
-knob.value = 10
+knob.value = 20
 
-console.log(knob.currentValue)
+
+function evt() {
+  let val = knob.currentValue;
+  circle.style.width = `${val}rem`
+  circle.style.height = `${val}rem`
+}
+
+knob.connectedCallback(evt)

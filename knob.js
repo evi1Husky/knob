@@ -73,14 +73,19 @@ class Knob extends HTMLElement {
     this.lastX = 0;
     this.currentX = 0;
     this.initialTickAngle = 0;
+    this.minAngle = 90;
+    this.maxAngle = 450;
 
     this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
   }
   
-  connectedCallback() {
+  connectedCallback(eventHandler) {
     this.knob.ontouchmove = (event) => {
       this.knobEvent(~~(event.touches[0].clientX));
       this.makeTicks(this.currentValue);
+      if(eventHandler) {
+        eventHandler()
+      }
     }
 
     this.knob.onmousedown = () => {
@@ -88,6 +93,9 @@ class Knob extends HTMLElement {
       window.onmousemove = (event) => {
         this.knobEvent(event.x);
         this.makeTicks(this.currentValue);
+        if(eventHandler) {
+          eventHandler()
+        }
       }
     }
 
@@ -162,9 +170,8 @@ class Knob extends HTMLElement {
 
   set value(percent) {
     if (percent >= 0 && percent <= 100) {
-      const min = 90;
-      const max = 450;
-      this.dialAngle = (((max - min) / 99) * percent ) + min;
+      this.dialAngle = 
+      (((this.maxAngle - this.minAngle) / 99) * percent ) + this.minAngle;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
       this.makeTicks(this.currentValue);
     }
