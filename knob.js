@@ -1,129 +1,170 @@
-(() => {
-  'use strict'
-
-const square = document.querySelector('.test');
-const value = document.querySelector('.val')
-
-
-const knob = document.querySelector('.knob');
-const knobDial = document.querySelector('.knob-dial');
-const tickContainer = document.querySelector('.tick-container');
-
-let dialAngle = 160
-let lastX = 0;
-let currentX = 0;
-let initialTickAngle = 0
-
-knobDial.style.transform = `rotate(${dialAngle}deg)`;
-value.innerHTML = getCurrentValue();
-
-knob.ontouchmove = (event) => {
-  knobEvent(~~(event.touches[0].clientX));
-  makeTicks(getCurrentValue())
-  squareResize()
-  value.innerHTML = getCurrentValue();
-}
-
-knob.onmousedown = () => {
-  knob.style.cursor = 'grabbing';
-  window.onmousemove = (event) => {
-    knobEvent(event.x);
-    makeTicks(getCurrentValue())
-    squareResize()
-    value.innerHTML = getCurrentValue();
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>
+    .knob {
+    position: relative;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-}
-
-window.onmouseup = () => {
-  knob.style.cursor = 'pointer';
-  window.onmousemove = null;
-}
-
-function knobEvent(x) {
-  lastX = x
-  if (lastX > currentX) {
-    rotateRight(x)
-  } else if (lastX < currentX){
-    rotateLeft(x)
+  
+  .knob-dial {
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    border-radius: 5px;
+    transform: rotate(0deg);
   }
-}
-
-function rotateRight(x) {
-  if (dialAngle <= 447) {
-    dialAngle += 6
-    knobDial.style.transform = `rotate(${dialAngle}deg)`;
-    currentX = x;
+  
+  .dial {
+    position: absolute;
+    width: 25%;
+    height: 120%;
+    margin-left: 75%;
+    border-radius: 5px;
+    background: #ac5;
   }
-}
-
-function rotateLeft(x) {
-  if (dialAngle >= 91) {
-    dialAngle -= 6
-    knobDial.style.transform = `rotate(${dialAngle}deg)`;
-    currentX = x;
+  
+  .tick {
+    position: absolute;
+    width: 7px;
+    height: 1.3px;
+    background-color: #3b3f48;
+    border-radius: 0.8px;
+    transform: rotate(0deg);
   }
-}
-
-function reset() {
-  if (dialAngle <= 90) {
-    dialAngle = 90
-    currentX = 0
-    lastX = 0
-    knobDial.style.transform = `rotate(${dialAngle}deg)`;
-  } else if (dialAngle >= 450) {
-    dialAngle = 450
-    currentX = 0
-    lastX = 0
-    knobDial.style.transform = `rotate(${dialAngle}deg)`;
+  
+  .lit-tick {
+    background-color: #ac5;
   }
-}
-
-function getCurrentValue() {
-  let knobValuePercent = Math.floor((dialAngle - 90) * 124 / 450);
-  if (knobValuePercent < 0) {
-    knobValuePercent = 0;
-  } else if (knobValuePercent >= 98){
-    knobValuePercent = 100;
+  
+  .tick-container {
+    background: transparent;
+    position: absolute;
+    transform: rotate(90deg);
+    margin-right: 4px;
+    margin-bottom: 2.5px;
   }
-  return knobValuePercent;
-}
+  </style>
+  <div class="knob">
+    <div class="knob-dial">
+      <div class="dial"></div>
+    </div>
+    <div class="tick-container"></div>
+  </div>
+`;
 
-function makeTicks(numberOfActiveTicks) {
-  const numberOfTicksToLight = numberOfActiveTicks / 4.7
-  const div = 360 / 20;
-  const radius = 40;
-  while(tickContainer.firstChild) {
-    tickContainer.removeChild(tickContainer.firstChild);
+class Knob extends HTMLElement {
+  constructor() {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this.knob = this.shadow.querySelector('.knob');
+    this.knobDial = this.shadow.querySelector('.knob-dial');
+    this.tickContainer = this.shadow.querySelector('.tick-container');
+  
+    this.dialAngle = 160
+    this.lastX = 0;
+    this.currentX = 0;
+    this.initialTickAngle = 0;
+
+    this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
   }
-  const offsetToParentCenter = parseInt(tickContainer.offsetWidth / 2);
-  const offsetToChildCenter = 3;
-  const totalOffset = offsetToParentCenter - offsetToChildCenter;
-  for (let i = 0; i < 20; ++i) {
-    const tick = document.createElement('div');
-    if(i < numberOfTicksToLight){
-      tick.className = "tick lit-tick";
-    } else {
-      tick.className = "tick";
+  
+  connectedCallback() {
+    this.knob.ontouchmove = (event) => {
+      this.knobEvent(~~(event.touches[0].clientX));
+      this.makeTicks(this.currentValue);
     }
-    let y = Math.sin((div * i) * (Math.PI / 180)) * radius;
-    let x = Math.cos((div * i) * (Math.PI / 180)) * radius;
-    tick.style.top = (y + totalOffset).toString() + "px";
-    tick.style.left = (x + totalOffset).toString() + "px";
-    tickContainer.appendChild(tick);
-    tick.style.transform = "rotate(" + initialTickAngle + "deg)";
-    initialTickAngle += 18;
+
+    this.knob.onmousedown = () => {
+      this.knob.style.cursor = 'grabbing';
+      window.onmousemove = (event) => {
+        this.knobEvent(event.x);
+        this.makeTicks(this.currentValue);
+      }
+    }
+
+    window.onmouseup = () => {
+      this.knob.style.cursor = 'pointer';
+      window.onmousemove = null;
+    }
+
+    this.makeTicks(this.currentValue);
   }
-  initialTickAngle = 0
+
+  knobEvent(x) {
+    this.lastX = x
+    if (this.lastX > this.currentX) {
+      this.rotateRight(x)
+    } else if (this.lastX < this.currentX){
+      this.rotateLeft(x)
+    }
+  }
+
+  rotateRight(x) {
+    if (this.dialAngle <= 447) {
+      this.dialAngle += 6
+      this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
+      this.currentX = x;
+    }
+  }
+
+  rotateLeft(x) {
+    if (this.dialAngle >= 91) {
+      this.dialAngle -= 6
+      this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
+      this.currentX = x;
+    }
+  }
+
+  makeTicks(numberOfActiveTicks) {
+    while(this.tickContainer.firstChild) {
+      this.tickContainer.removeChild(this.tickContainer.firstChild);
+    }
+    const numberOfTicksToLight = numberOfActiveTicks / 4.7;
+    const knob = 360 / 20;
+    const radius = 40;
+    const offset = this.tickContainer.offsetWidth - 2.5;
+    for (let i = 0; i < 20; ++i) {
+      const tick = document.createElement('div');
+      const y = Math.sin((knob * i) * (Math.PI / 180)) * radius;
+      const x = Math.cos((knob * i) * (Math.PI / 180)) * radius;
+      tick.style.top = `${y + offset}px`;
+      tick.style.left = `${x + offset}px`;
+      this.tickContainer.appendChild(tick);
+      if (i < numberOfTicksToLight) {
+        tick.className = "tick lit-tick";
+      } else {
+        tick.className = "tick";
+      }
+      tick.style.transform = `rotate(${this.initialTickAngle}deg)`;
+      this.initialTickAngle += 18;
+    }
+    this.initialTickAngle = 0;
+  }
+
+  get currentValue() {
+    let knobValuePercent = Math.floor((this.dialAngle - 90) * 124 / 450);
+    if (knobValuePercent < 0) {
+      knobValuePercent = 0;
+    } else if (knobValuePercent >= 98){
+      knobValuePercent = 100;
+    }
+    return knobValuePercent;
+  }
+
+  set value(val) {
+    this.dialAngle = val
+    this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
+    this.makeTicks(this.currentValue);
+  }
 }
 
-makeTicks(getCurrentValue())
-
-function squareResize() {
-  const val = (getCurrentValue() / 100) * 17;
-  square.style.width = `${val}rem`
-  square.style.height = `${val}rem`
-}
-
-squareResize()
-
-})();
+customElements.define("volume-knob", Knob);

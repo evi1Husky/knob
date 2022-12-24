@@ -12,19 +12,23 @@
     <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
     <text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
     <title>knob</title>
-    <link rel="stylesheet" href="knob.css">
+    <script type="module" src="knob.js"></script>
+    <style>
+      body {
+        background: #1b1d21;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
   </head>
   <body>
     <main>
-      <p class="val">0</p>
-      <div class="test"></div>
-      <div class="knob">
-        <div class="knob-dial">
-          <div class="dial"></div>
-        </div>
-        <div class="tick-container"></div>
-      </div>
+      <volume-knob id="knob"></volume-knob>
     </main>
-	<script src="knob.js"></script>
+	<script src="main.js" type="module"></script>
   </body>
 </html>
