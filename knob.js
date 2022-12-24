@@ -160,10 +160,14 @@ class Knob extends HTMLElement {
     return knobValuePercent;
   }
 
-  set value(val) {
-    this.dialAngle = val
-    this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
-    this.makeTicks(this.currentValue);
+  set value(percent) {
+    if (percent >= 0 && percent <= 100) {
+      const min = 90;
+      const max = 450;
+      this.dialAngle = (((max - min) / 99) * percent ) + min;
+      this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
+      this.makeTicks(this.currentValue);
+    }
   }
 }
 
