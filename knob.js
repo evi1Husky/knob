@@ -1,3 +1,5 @@
+'use strict'
+
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
@@ -75,6 +77,7 @@ class Knob extends HTMLElement {
     this.initialTickAngle = 0;
     this.minAngle = 90;
     this.maxAngle = 450;
+    this.dialRotationRate = 8;
 
     this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
   }
@@ -117,16 +120,26 @@ class Knob extends HTMLElement {
   }
 
   rotateRight(x) {
-    if (this.dialAngle <= 447) {
-      this.dialAngle += 6
+    if (this.dialAngle <= this.maxAngle) {
+      if (this.dialAngle > this.maxAngle - 8) {
+        this.dialRotationRate = 1;
+      } else {
+        this.dialRotationRate = 8;
+      }
+      this.dialAngle += this.dialRotationRate;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
       this.currentX = x;
-    }
+    } 
   }
 
   rotateLeft(x) {
-    if (this.dialAngle >= 91) {
-      this.dialAngle -= 6
+    if (this.dialAngle >= this.minAngle) {
+      if (this.dialAngle < this.minAngle + 8) {
+        this.dialRotationRate = 1;
+      } else {
+        this.dialRotationRate = 8;
+      }
+      this.dialAngle -= this.dialRotationRate;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
       this.currentX = x;
     }
@@ -171,7 +184,7 @@ class Knob extends HTMLElement {
   set value(percent) {
     if (percent >= 0 && percent <= 100) {
       this.dialAngle = 
-      (((this.maxAngle - this.minAngle) / 99) * percent ) + this.minAngle;
+      (((this.maxAngle - this.minAngle) / 100) * percent ) + this.minAngle;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
       this.makeTicks(this.currentValue);
     }
