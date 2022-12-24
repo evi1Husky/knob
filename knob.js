@@ -77,7 +77,7 @@ class Knob extends HTMLElement {
     this.initialTickAngle = 0;
     this.minAngle = 90;
     this.maxAngle = 450;
-    this.dialRotationRate = 8;
+    this.dialRotationRate = 7;
 
     this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
   }
@@ -121,10 +121,10 @@ class Knob extends HTMLElement {
 
   rotateRight(x) {
     if (this.dialAngle <= this.maxAngle) {
-      if (this.dialAngle > this.maxAngle - 8) {
+      if (this.dialAngle > this.maxAngle - 7) {
         this.dialRotationRate = 1;
       } else {
-        this.dialRotationRate = 8;
+        this.dialRotationRate = 7;
       }
       this.dialAngle += this.dialRotationRate;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
@@ -134,10 +134,10 @@ class Knob extends HTMLElement {
 
   rotateLeft(x) {
     if (this.dialAngle >= this.minAngle) {
-      if (this.dialAngle < this.minAngle + 8) {
+      if (this.dialAngle < this.minAngle + 7) {
         this.dialRotationRate = 1;
       } else {
-        this.dialRotationRate = 8;
+        this.dialRotationRate = 7;
       }
       this.dialAngle -= this.dialRotationRate;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
@@ -172,7 +172,7 @@ class Knob extends HTMLElement {
   }
 
   get currentValue() {
-    let knobValuePercent = Math.floor((this.dialAngle - 90) * 124 / 450);
+    let knobValuePercent = Math.floor((this.dialAngle - 90) * 125 / 450);
     if (knobValuePercent < 0) {
       knobValuePercent = 0;
     } else if (knobValuePercent >= 98){
@@ -184,9 +184,13 @@ class Knob extends HTMLElement {
   set value(percent) {
     if (percent >= 0 && percent <= 100) {
       this.dialAngle = 
-      (((this.maxAngle - this.minAngle) / 100) * percent ) + this.minAngle;
+      (((this.maxAngle - this.minAngle) / 99) * percent ) + this.minAngle;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
       this.makeTicks(this.currentValue);
+    }
+    if (percent === 100) {
+      this.dialAngle = this.maxAngle - 1
+      this.knobDial.style.transform = `rotate(${this.maxAngle - 1}deg)`;
     }
   }
 }
