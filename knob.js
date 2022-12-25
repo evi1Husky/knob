@@ -3,77 +3,78 @@
 const template = document.createElement("template");
 
 template.innerHTML = `
-  <style>
-    :host {
-    --knobColor: #0b0e12;
-    --width: 60px;
-    --height: 60px;
-    --dialColor: #c7ffff;
-    --dialHeight: 120%;
-    --tickColor: #c7ffff;
-    --tickLength: 7px;
-    --tickWidth: 1.5px;
-    --ticksMarginBottom: 3px;
-    }
+<style>
+:host {
+  --knobColor: #0b0e12;
+  --knobShadow: #242e3b;
+  --width: 60px;
+  --height: 60px;
+  --dialColor: #c7ffff;
+  --dialHeight: 120%;
+  --tickColor: #c7ffff;
+  --tickLength: 7px;
+  --tickWidth: 1.5px;
+  --ticksMarginBottom: 3px;
+  }
 
-    .knob {
-    position: relative;
-    cursor: pointer;
-    width: var(--width);
-    height: var(--height);
-    border-radius: 50%;
-    background-color: var(--knobColor);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .knob-dial {
-    width: 100%;
-    height: 3px;
-    background: transparent;
-    border-radius: 5px;
-    transform: rotate(0deg);
-  }
-  
-  .dial {
-    position: absolute;
-    width: 20%;
-    height: var(--dialHeight);
-    margin-left: 80%;
-    border-radius: 100px;
-    background: var(--dialColor);
-    box-shadow: 0 0 9px 0.1px var(--dialColor);
-  }
-  
-  .tick {
-    position: absolute;
-    width: var(--tickLength);
-    height: var(--tickWidth);
-    background-color: #3b3f48;
-    border-radius: 10px;
-    transform: rotate(0deg);
-  }
-  
-  .lit-tick {
-    background-color: var(--tickColor);
-    box-shadow: 0 0 9px 0.1px var(--tickColor);
-  }
-  
-  .tick-container {
-    background: transparent;
-    position: absolute;
-    transform: rotate(125deg);
-   
-    margin-bottom: var(--ticksMarginBottom);
-  }
-  </style>
-  <div class="knob">
-    <div class="knob-dial">
-      <div class="dial"></div>
-    </div>
-    <div class="tick-container"></div>
+.knob {
+  position: relative;
+  cursor: pointer;
+  width: var(--width);
+  height: var(--height);
+  border-radius: 50%;
+  background-color: var(--knobColor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0px 3px var(--knobShadow) inset;
+}
+
+.knob-dial {
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  border-radius: 5px;
+  transform: rotate(0deg);
+}
+
+.dial {
+  position: absolute;
+  width: 20%;
+  height: var(--dialHeight);
+  margin-left: 76%;
+  border-radius: 100px;
+  background: var(--dialColor);
+  box-shadow:  0 0 20px 0.1px var(--dialColor);
+}
+
+.tick {
+  position: absolute;
+  width: var(--tickLength);
+  height: var(--tickWidth);
+  background-color: #3b3f48;
+  border-radius: 10px;
+  transform: rotate(0deg);
+}
+
+.lit-tick {
+  background-color: var(--tickColor);
+  box-shadow:  0 0 15px 0.1px var(--tickColor);
+}
+
+.tick-container {
+  background: transparent;
+  position: absolute;
+  transform: rotate(125deg);
+  margin-bottom: var(--ticksMarginBottom);
+}
+</style>
+<div class="knob">
+  <div class="knob-dial">
+    <div class="dial"></div>
   </div>
+  <div class="tick-container"></div>
+</div>
 `;
 
 class Knob extends HTMLElement {
@@ -217,6 +218,10 @@ class Knob extends HTMLElement {
     this.style.setProperty('--knobColor', value); 
   }
 
+  set knobShadow(value) {
+    this.style.setProperty('--knobShadow', value); 
+  }
+
   set knobSize(value) {
     this.style.setProperty('--width', `${value}px`);
     this.style.setProperty('--height',`${value}px`);
@@ -237,4 +242,4 @@ class Knob extends HTMLElement {
   }
 }
 
-customElements.define("control-knob", Knob);
+customElements.define('control-knob', Knob);
