@@ -1,6 +1,5 @@
 const circle = document.getElementById('circle');
 
-const main = document.getElementById('main');
 // get the knob component html element
 
 const knob = document.getElementById('knob');
@@ -28,9 +27,7 @@ knob.knobEventHandler = evt;
 
 // style your knob
 
-// knob.knobColor ='black';
-
 knob.knobSize = 100;
-
-// knob.lightColor = 'cyan';
-
+knob.knobColor ='#0b0e12';
+knob.knobShadow = '0 0px 3px #242e3b inset';
+knob.lightColor = '#c7ffff';

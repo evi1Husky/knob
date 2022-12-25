@@ -6,7 +6,7 @@ template.innerHTML = `
 <style>
 :host {
   --knobColor: #0b0e12;
-  --knobShadow: #242e3b;
+  --knobShadow: 0 0px 3px #242e3b inset;
   --width: 60px;
   --height: 60px;
   --dialColor: #c7ffff;
@@ -27,7 +27,7 @@ template.innerHTML = `
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0px 3px var(--knobShadow) inset;
+  box-shadow: var(--knobShadow)
 }
 
 .knob-dial {
