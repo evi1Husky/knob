@@ -18,8 +18,7 @@ circle.style.left = `${(knob.currentValue /  100) * 100}%`;
 // write an event handler
 
 function evt() {
-  let val = (knob.currentValue /  100) * 100;
-  if (val < 1) {val = 2}
+  const val = (knob.currentValue /  100) * 100;
   circle.style.left = `${val}%`;
 }
 
@@ -29,8 +28,8 @@ knob.knobEventHandler = evt;
 
 // style your knob
 
-knob.knobColor ='black';
+// knob.knobColor ='black';
 
-knob.knobSize = 90;
+knob.knobSize = 80;
 
-knob.lightColor = 'cyan';
+// knob.lightColor = 'cyan';

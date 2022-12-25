@@ -5,14 +5,14 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host {
-    --knobColor: black;
+    --knobColor: #0b0e12;
     --width: 60px;
     --height: 60px;
-    --dialColor: cyan;
+    --dialColor: #c7ffff;
     --dialHeight: 120%;
-    --tickColor: cyan;
+    --tickColor: #c7ffff;
     --tickLength: 7px;
-    --tickWidth: 1.3px;
+    --tickWidth: 1.5px;
     --ticksMarginBottom: 3px;
     }
 
@@ -43,6 +43,7 @@ template.innerHTML = `
     margin-left: 80%;
     border-radius: 100px;
     background: var(--dialColor);
+    box-shadow: 0 0 9px 0.1px var(--dialColor);
   }
   
   .tick {
@@ -56,6 +57,7 @@ template.innerHTML = `
   
   .lit-tick {
     background-color: var(--tickColor);
+    box-shadow: 0 0 9px 0.1px var(--tickColor);
   }
   
   .tick-container {
