@@ -7,18 +7,20 @@ const knob = document.getElementById('knob');
 
 // use .value setter to set initial knob value in percents
 
-knob.value = 40
+knob.value = 56;
 
 // use .currentValue getter to get current knob value
 
-console.log(knob.currentValue)
+console.log(knob.currentValue);
+
+circle.style.left = `${(knob.currentValue /  100) * 100}%`;
 
 // write an event handler
 
 function evt() {
-  const val = (knob.currentValue /  100) * 7;
-  circle.style.width = `${val}rem`
-  circle.style.height = `${val}rem`
+  let val = (knob.currentValue /  100) * 100;
+  if (val < 1) {val = 2}
+  circle.style.left = `${val}%`;
 }
 
 // assign event handler to .knobEventHandler property of knob object
@@ -29,6 +31,6 @@ knob.knobEventHandler = evt;
 
 knob.knobColor ='black';
 
-knob.knobSize = 80;
+knob.knobSize = 90;
 
 knob.lightColor = 'cyan';

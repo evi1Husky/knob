@@ -14,38 +14,19 @@
     <title>knob</title>
     <script type="module" src="knob.js"></script>
     <style>
-      body {
-        background: #1b1d21;
-        display: flex;
-        flex-direction: column;
-        justify-content: center; 
-        align-items: center;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-      }
-      #circle {
-        position: absolute;
-        top: 10%;
-        right: 30%;
-        width: 7rem;
-        height: 7rem;
-        background-color: blueviolet;
-        border-radius: 50%;
-      }
-      #main {
-        display: flex;
-        justify-content: center; 
-        align-items: center;
-        flex-wrap: wrap;
-        }
+      body{background:#1b1d21;display:flex;flex-direction:column;
+        justify-content:center;align-items:center;width:100vw;height:100vh;
+        overflow:hidden;}
+      #circle{position:absolute;top:20%;right:96%;width:0.5rem;height:0.5rem;
+        background-color:cyan;border-radius:50%;}
+      #main{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;}
     </style>
   </head>
   <body>
     <main id="main">
       <div id="circle"></div>
 
-      <!-- insert volume-knob component into html and assign it an id -->
+      <!-- insert knob component into html and assign it an id -->
 
       <control-knob id="knob"></volume-knob>
       
