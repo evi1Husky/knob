@@ -100,7 +100,7 @@ class Knob extends HTMLElement {
   connectedCallback() {
     this.knob.ontouchmove = (event) => {
       this.knobEvent(~~(event.touches[0].clientX));
-      this.makeTicks(this.currentValue);
+      this.makeTicks(this.currentValue, this.ticksRadius);
       if(this.knobEventHandler) {
         this.knobEventHandler()
       }
