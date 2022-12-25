@@ -1,12 +1,12 @@
 const circle = document.getElementById('circle');
-
-// get the volume knob component
+const main = document.getElementById('main');
+// get the volume knob component html element
 
 const knob = document.getElementById('knob');
 
 // use .value setter to set initial knob value in percents
 
-knob.value = 40
+knob.value = 10
 
 // use .currentValue getter to get current knob value
 
@@ -15,12 +15,20 @@ console.log(knob.currentValue)
 // write an event handler
 
 function evt() {
-  let val = (knob.currentValue /  100) * 7;
+  const val = (knob.currentValue /  100) * 7;
   circle.style.width = `${val}rem`
   circle.style.height = `${val}rem`
 }
 
-// pass event handler to the knob element through connectedCallback() method
+// assign event handler to .knobEventHandler property of knob object
 
-knob.connectedCallback(evt)
+knob.knobEventHandler = evt;
+
+// style knob component
+
+knob.knobColor ='black';
+
+knob.knobSize = 90;
+
+knob.lightColor = 'cyan';
 

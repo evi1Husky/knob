@@ -1,15 +1,28 @@
 'use strict'
 
 const template = document.createElement("template");
+
 template.innerHTML = `
   <style>
+    :host {
+    --knobColor: black;
+    --width: 60px;
+    --height: 60px;
+    --dialColor: green;
+    --dialHeight: 120%;
+    --tickColor: green;
+    --tickLength: 7px;
+    --tickWidth: 1.3px;
+    --ticksMarginBottom: 3px;
+    }
+
     .knob {
     position: relative;
     cursor: pointer;
-    width: 60px;
-    height: 60px;
+    width: var(--width);
+    height: var(--height);
     border-radius: 50%;
-    background-color: black;
+    background-color: var(--knobColor);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,24 +38,24 @@ template.innerHTML = `
   
   .dial {
     position: absolute;
-    width: 25%;
-    height: 120%;
-    margin-left: 75%;
-    border-radius: 5px;
-    background: #ac5;
+    width: 20%;
+    height: var(--dialHeight);
+    margin-left: 80%;
+    border-radius: 100px;
+    background: var(--dialColor);
   }
   
   .tick {
     position: absolute;
-    width: 7px;
-    height: 1.3px;
+    width: var(--tickLength);
+    height: var(--tickWidth);
     background-color: #3b3f48;
-    border-radius: 0.8px;
+    border-radius: 10px;
     transform: rotate(0deg);
   }
   
   .lit-tick {
-    background-color: #ac5;
+    background-color: var(--tickColor);
   }
   
   .tick-container {
@@ -50,7 +63,7 @@ template.innerHTML = `
     position: absolute;
     transform: rotate(90deg);
     margin-right: 4px;
-    margin-bottom: 2.5px;
+    margin-bottom: var(--ticksMarginBottom);
   }
   </style>
   <div class="knob">
@@ -78,16 +91,18 @@ class Knob extends HTMLElement {
     this.minAngle = 90;
     this.maxAngle = 450;
     this.dialRotationRate = 7;
+    this.knobEventHandler = null;
+    this.ticksRadius = 45
 
     this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
   }
   
-  connectedCallback(eventHandler) {
+  connectedCallback() {
     this.knob.ontouchmove = (event) => {
       this.knobEvent(~~(event.touches[0].clientX));
       this.makeTicks(this.currentValue);
-      if(eventHandler) {
-        eventHandler()
+      if(this.knobEventHandler) {
+        this.knobEventHandler()
       }
     }
 
@@ -95,9 +110,9 @@ class Knob extends HTMLElement {
       this.knob.style.cursor = 'grabbing';
       window.onmousemove = (event) => {
         this.knobEvent(event.x);
-        this.makeTicks(this.currentValue);
-        if(eventHandler) {
-          eventHandler()
+        this.makeTicks(this.currentValue, this.ticksRadius);
+        if(this.knobEventHandler) {
+          this.knobEventHandler()
         }
       }
     }
@@ -107,7 +122,7 @@ class Knob extends HTMLElement {
       window.onmousemove = null;
     }
 
-    this.makeTicks(this.currentValue);
+    this.makeTicks(this.currentValue, this.ticksRadius);
   }
 
   knobEvent(x) {
@@ -145,18 +160,17 @@ class Knob extends HTMLElement {
     }
   }
 
-  makeTicks(numberOfActiveTicks) {
+  makeTicks(numberOfActiveTicks, ticksRadius) {
     while(this.tickContainer.firstChild) {
       this.tickContainer.removeChild(this.tickContainer.firstChild);
     }
-    const numberOfTicksToLight = numberOfActiveTicks / 4.7;
+    const numberOfTicksToLight = numberOfActiveTicks / 4.8;
     const knob = 360 / 20;
-    const radius = 40;
     const offset = this.tickContainer.offsetWidth - 2.5;
     for (let i = 0; i < 20; ++i) {
       const tick = document.createElement('div');
-      const y = Math.sin((knob * i) * (Math.PI / 180)) * radius;
-      const x = Math.cos((knob * i) * (Math.PI / 180)) * radius;
+      const y = Math.sin((knob * i) * (Math.PI / 180)) * ticksRadius;
+      const x = Math.cos((knob * i) * (Math.PI / 180)) * ticksRadius;
       tick.style.top = `${y + offset}px`;
       tick.style.left = `${x + offset}px`;
       this.tickContainer.appendChild(tick);
@@ -175,7 +189,7 @@ class Knob extends HTMLElement {
     let knobValuePercent = Math.floor((this.dialAngle - 90) * 125 / 450);
     if (knobValuePercent < 0) {
       knobValuePercent = 0;
-    } else if (knobValuePercent >= 98){
+    } else if (knobValuePercent >= 99){
       knobValuePercent = 100;
     }
     return knobValuePercent;
@@ -186,12 +200,38 @@ class Knob extends HTMLElement {
       this.dialAngle = 
       (((this.maxAngle - this.minAngle) / 99) * percent ) + this.minAngle;
       this.knobDial.style.transform = `rotate(${this.dialAngle}deg)`;
-      this.makeTicks(this.currentValue);
+      this.makeTicks(this.currentValue, this.ticksRadius);
     }
     if (percent === 100) {
       this.dialAngle = this.maxAngle - 1
       this.knobDial.style.transform = `rotate(${this.maxAngle - 1}deg)`;
     }
+  }
+
+  set knobColor(value) {
+    this.style.setProperty('--knobColor', value); 
+  }
+
+  set knobSize(value) {
+    this.style.setProperty('--width', `${value}px`);
+    this.style.setProperty('--height',`${value}px`);
+    this.style.setProperty('--dialHeight',`${value + 30}%`);
+    this.ticksRadius = value / 1.6;
+    this.style.setProperty('--tickLength', `${value / 10}px`);
+    this.style.setProperty('--tickWidth', `${value / 50}px`);
+    if (value > 90) {
+      this.style.setProperty('--ticksMarginBottom', `${value / 20}px`);
+    } else if (value < 90 && value > 60){
+      this.style.setProperty('--ticksMarginBottom', `${value / 50}px`);
+    } else if (value < 61) {
+      this.style.setProperty('--ticksMarginBottom', `${-value / 40}px`);
+    }
+    this.makeTicks(this.currentValue, this.ticksRadius);
+  }
+
+  set lightColor(value) {
+    this.style.setProperty('--dialColor', value);
+    this.style.setProperty('--tickColor', value);
   }
 }
 
