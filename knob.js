@@ -59,7 +59,7 @@ template.innerHTML = `
 
 .lit-tick {
   background-color: var(--tickColor);
-  box-shadow:  0 0 15px 0.1px var(--tickColor);
+  box-shadow:  0 0 10px 0.1px var(--tickColor);
 }
 
 .tick-container {

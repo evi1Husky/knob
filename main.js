@@ -30,7 +30,7 @@ knob.knobEventHandler = evt;
 
 // knob.knobColor ='black';
 
-knob.knobSize = 130;
+knob.knobSize = 100;
 
 // knob.lightColor = 'cyan';
 
