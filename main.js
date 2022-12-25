@@ -1,12 +1,13 @@
 const circle = document.getElementById('circle');
+
 const main = document.getElementById('main');
-// get the volume knob component html element
+// get the knob component html element
 
 const knob = document.getElementById('knob');
 
 // use .value setter to set initial knob value in percents
 
-knob.value = 10
+knob.value = 40
 
 // use .currentValue getter to get current knob value
 
@@ -24,11 +25,10 @@ function evt() {
 
 knob.knobEventHandler = evt;
 
-// style knob component
+// style your knob
 
 knob.knobColor ='black';
 
-knob.knobSize = 90;
+knob.knobSize = 80;
 
 knob.lightColor = 'cyan';
-

@@ -14,7 +14,6 @@
     <title>knob</title>
     <script type="module" src="knob.js"></script>
     <style>
-      html, body {margin: 0; height: 100%; overflow: hidden}
       body {
         background: #1b1d21;
         display: flex;
@@ -23,6 +22,7 @@
         align-items: center;
         width: 100vw;
         height: 100vh;
+        overflow: hidden;
       }
       #circle {
         position: absolute;
@@ -47,7 +47,7 @@
 
       <!-- insert volume-knob component into html and assign it an id -->
 
-      <volume-knob id="knob"></volume-knob>
+      <control-knob id="knob"></volume-knob>
       
     </main>
 	<script src="main.js" type="module"></script>
