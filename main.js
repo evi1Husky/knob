@@ -27,33 +27,7 @@ knob.knobEventHandler = evt;
 
 // style your knob
 
-knob.knobSize = 90;
+knob.knobSize = 100;
 knob.knobColor ='#0b0e12';
 knob.knobShadow = '0 0px 3px #242e3b inset';
 knob.lightColor = '#c7ffff';
-
-
-const button = 
-document.getElementById('button').addEventListener('click', () => {
-  let val = 0;
-  let top = false;
-  let count = 0;
-  setInterval(() => {
-    if (count === 5) {
-      return;
-    }
-    if (!top) {
-      val++;
-    } else if(top) {
-      val--;
-    }
-    if (val === 100) {
-      top = true;
-      count++;
-    } else if (val === 0) {
-      top = false;
-    }
-    knob.value = val
-    circle.style.left = `${(knob.currentValue /  100) * 100}%`;
-  }, 10);
-})
